@@ -26,6 +26,7 @@ S = os.environ['S']
 
 admin_group_id = -652463766 # החברים הטובים מנהלים
 
+# Translate all 8 emotions for sentiment analysis
 def emotion_to_he(emotion):
     if emotion == "anger":
         return "כעס"
@@ -42,6 +43,7 @@ def emotion_to_he(emotion):
     elif emotion == "trust":
         return "אמון"
     return ""
+
 def detect_language(text):
     heb_score = 0
     eng_score = 0
@@ -122,24 +124,24 @@ def handle_message(data):
                     found_emotion = False
                     for emotion, score in top_emotions:
                         translated_emotion = emotion_to_he(emotion)
-                        print("forloop checks")
-                        print(score, translated_emotion)
                         if score == 0 or not translated_emotion:
                             continue
                         found_emotion = True
                         percentage = f"{round( (1 / score), 1 )}%"
                         details += f"*{emotion_to_he(emotion)}*: {percentage}\n"
-                    print(found_emotion)
                     if found_emotion:
-                        print("adding " + details)
                         response += details
-                    print("nrclex done")
                 except Exception as e:
                     print(e)
                     pass
 
     elif type == 'group':
         # todo handle bot responses to group messages
+        if 'text' in message:
+            text = message['text']
+        if 'from' in message:
+            _from = message['from']
+            user_name = _from['username']
         response = ""
         chat_id = OWN_ID
     print("The response", response)
